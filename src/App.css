@@ -8,3 +8,7 @@
     height: 100vh;
     display: flex;
 }
+
+li {
+    list-style-type: none;
+}

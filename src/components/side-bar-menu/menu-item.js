@@ -5,7 +5,7 @@ const MenuItem = (props) => {
 
     return (
         <div className={'item-container'}>
-            <img src={icon}/>
+            <img alt={'icon'} src={icon}/>
             <span>{label}</span>
         </div>
     )

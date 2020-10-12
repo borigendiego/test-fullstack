@@ -5,7 +5,6 @@ import './main-app.scss';
 import FilesManager from './files-manager';
 import HeaderMenu from './header-menu'
 
-
 const MainApp = () => {
     return (
         <div className={'main-app-container'}>

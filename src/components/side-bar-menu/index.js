@@ -4,28 +4,32 @@ import './sideBarMenu.scss'
 //Components
 import MenuItem from './menu-item';
 //Icons
-import Chart from '../../assets/icons/chart.svg'
+import Chart from '../../assets/icons/chart.svg';
+import Description from '@material-ui/icons/Description';
+import People from '@material-ui/icons/People';
+import Create from '@material-ui/icons/Create';
+import Delete from '@material-ui/icons/Delete';
 
 const SideBarMenu = () => {
     const items = [
         {
-            icon: Chart,
+            iconURL: Chart,
             label: 'Dashboard',
         },
         {
-            icon: Chart,
+            Icon: Description,
             label: 'My files',
         },
         {
-            icon: Chart,
+            Icon: People,
             label: 'Connections',
         },
         {
-            icon: Chart,
+            Icon: Create,
             label: 'File Request',
         },
         {
-            icon: Chart,
+            Icon: Delete,
             label: 'Deleted Files',
         },
     ];
@@ -39,8 +43,8 @@ const SideBarMenu = () => {
                             <MenuItem item={item} />
                         </li>)
                 }
+                <hr />
             </ul>
-            <hr />
         </div>
     )
 };

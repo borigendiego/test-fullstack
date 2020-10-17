@@ -112,7 +112,7 @@ const FilesManager = () => {
                     </Button>
                 </Modal>
             </div>
-            <FilesTable files={selectedFiles} />
+            <FilesTable files={selectedFiles} updateFiles={setSelectedFiles} />
         </div>
     )
 };

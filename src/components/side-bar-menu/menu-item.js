@@ -1,11 +1,15 @@
 import React from 'react';
 
 const MenuItem = (props) => {
-    const { icon, label } = props.item;
+    const { iconURL, label, Icon } = props.item;
 
     return (
         <div className={'item-container'}>
-            <img alt={'icon'} src={icon}/>
+            {
+                iconURL
+                    ? <img className={'item-icon'} alt={'icon'} src={iconURL}/>
+                    : Icon && <Icon className={'item-icon'} />
+            }
             <span>{label}</span>
         </div>
     )

@@ -40,6 +40,7 @@ const SideBarMenu = () => {
                         </li>)
                 }
             </ul>
+            <hr />
         </div>
     )
 };

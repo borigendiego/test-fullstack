@@ -4,6 +4,12 @@
   width: 25%;
   background-color: $primary-background-color;
   display: flex;
+  flex-direction: column;
+
+  hr {
+    width: 80%;
+    @include simple-line;
+  }
 }
 
 .side-bar-items {
@@ -11,7 +17,6 @@
   width: 100%;
   height: 70%;
   margin: auto;
-  border-bottom: solid;
 
   li {
     &:hover {

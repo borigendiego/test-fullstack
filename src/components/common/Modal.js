@@ -12,10 +12,9 @@ const MyModal = (props) => {
     const handleClose = () => setOpenModel(false);
     const useStyles = makeStyles(theme => ({
         dialogTittle: {
-            backgroundColor: '#F37029',
             '& h2': {
-                textAlign: 'center',
-                color: '#fff'
+                textAlign: 'left',
+                color: '#7bddd2'
             }
         },
     }));

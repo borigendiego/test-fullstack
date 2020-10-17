@@ -1,2 +1,10 @@
 $primary-background-color: #e1e4ed;
 $primary-hover-color: #7bddd2;
+
+@mixin simple-line {
+  border: none;
+  margin-left: auto;
+  margin-right: auto;
+  height: 2px;
+  background-color: black;
+}

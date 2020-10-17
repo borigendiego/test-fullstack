@@ -26,7 +26,7 @@ function createData(name, modified) {
 }
 
 const FilesTable = (props) => {
-    const { files, updateFiles } = props;
+    const { files } = props;
     const classes = useStyles();
     const rows = files.map((file) => createData(file.name, file.modified));
     const [anchorEl, setAnchorEl] = useState(null);

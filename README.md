@@ -1,3 +1,12 @@
+## THINGS TO IMPROVE
+
+* Use Redux to save the state of the app properly.
+* Connect with reak services to store the images.
+* File table functionality:
+  - Sort by name.
+  - Bulk actions.
+* Drag and drop option for file uploading
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

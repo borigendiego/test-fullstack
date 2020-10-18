@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+    Link
+} from 'react-router-dom';
 //Style
 import './sideBarMenu.scss'
 //Components
@@ -15,22 +18,27 @@ const SideBarMenu = () => {
         {
             iconURL: Chart,
             label: 'Dashboard',
+            link: 'dashboard'
         },
         {
             Icon: Description,
             label: 'My files',
+            link: '/'
         },
         {
             Icon: People,
             label: 'Connections',
+            link: '/connections'
         },
         {
             Icon: Create,
             label: 'File Request',
+            link: '/files',
         },
         {
             Icon: Delete,
             label: 'Deleted Files',
+            link: '/deleted-files',
         },
     ];
 
@@ -39,9 +47,12 @@ const SideBarMenu = () => {
             <ul className={'side-bar-items'}>
                 {
                     items.map((item, index) =>
-                        <li key={index}>
-                            <MenuItem item={item} />
-                        </li>)
+                        <Link to={item.link}>
+                            <li key={index}>
+                                <MenuItem item={item} />
+                            </li>
+                        </Link>
+                    )
                 }
                 <hr />
             </ul>

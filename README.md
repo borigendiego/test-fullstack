@@ -4,6 +4,7 @@
 * Connect with reak services to store the images.
 * File table functionality:
   - Sort by name.
+  - Simple actions.
   - Bulk actions.
 * Drag and drop option for file uploading
 

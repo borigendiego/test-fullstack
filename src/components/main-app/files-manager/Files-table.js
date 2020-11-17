@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
-//Components
+//Redux
+import { connect } from "react-redux";
+import { getFilesList } from "../../../redux/selectors";
+import { deleteFiles, updateFile } from "../../../redux/actions";
+//Material ui
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,33 +13,46 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-//Material ui
 import Menu from '@material-ui/core/Menu';
 import IconButton from '@material-ui/core/IconButton';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import MenuItem from '@material-ui/core/MenuItem';
+import Button from "@material-ui/core/Button";
+//Components
+import Modal from '../../common/Modal';
 
 const useStyles = makeStyles({
     table: {
         minWidth: 650,
     },
+    inputContainer: {
+        marginBottom: '15px',
+        display: 'flex',
+        alignItems: 'baseline',
+    },
+    buttonsContainer: {
+        display: 'flex',
+        justifyContent: 'space-between'
+    },
+
 });
 
-function createData(name, modified) {
-    return { name, modified };
-}
+const createData = (name, modified, id) => ({ name, modified, id });
 
 const FilesTable = (props) => {
-    const { files } = props;
+    const { files, deleteFile, updateFile } = props;
     const classes = useStyles();
-    const rows = files.map((file) => createData(file.name, file.modified));
+    const rows = files.map((file) => createData(file.name, file.modified, file.id));
     const [anchorEl, setAnchorEl] = useState(null);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [inputValue, setInputValue] = useState('');
+    const [openModifyModal, setOpenModifyModal] = useState(null);
     const open = Boolean(anchorEl);
 
-    const handleClick = (event) => {
+    const handleClick = (event, item) => {
+        setSelectedItem(item);
         setAnchorEl(event.currentTarget);
     };
-
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -57,11 +74,11 @@ const FilesTable = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row, index) => (
-                        <TableRow key={row.name}>
+                    {rows.map((row, index) => {
+                        return (
+                        <TableRow key={index} selectable={false}>
                             <TableCell padding={'checkbox'}>
                                 <Checkbox
-                                    onChange={() => {}}
                                     inputProps={{ 'aria-label': 'select all desserts' }}
                                 />
                             </TableCell>
@@ -75,7 +92,7 @@ const FilesTable = (props) => {
                                         aria-label={'more'}
                                         aria-controls={'long-menu'}
                                         aria-haspopup={'true'}
-                                        onClick={handleClick}
+                                        onClick={(event) => handleClick(event, row)}
                                     >
                                         <MoreHorizIcon />
                                     </IconButton>
@@ -92,22 +109,79 @@ const FilesTable = (props) => {
                                         }}
                                     >
                                         <MenuItem key={'Download'} onClick={handleClose}>Download</MenuItem>
-                                        <MenuItem key={'Rename'} onClick={handleClose}>Rename</MenuItem>
+                                        <MenuItem key={'Rename'} onClick={() => {
+                                            setOpenModifyModal(true);
+                                            handleClose();
+                                        }}>
+                                            Rename
+                                        </MenuItem>
                                         <MenuItem key={'Delete'} onClick={() => {
-                                            /*files.splice(index, 1);
-                                            updateFiles(files);*/
+                                            deleteFile(selectedItem);
                                             handleClose();
                                         }
-                                        }>Delete</MenuItem>
+                                        }>
+                                            Delete
+                                        </MenuItem>
                                     </Menu>
                                 </div>
                             </TableCell>
                         </TableRow>
-                    ))}
+                    )})}
                 </TableBody>
             </Table>
+            <Modal
+                shouldOpen={openModifyModal}
+                dialogTittle={'Rename'}
+                setOpenModel={setOpenModifyModal}
+            >
+                <div className={classes.inputContainer}>
+                    <span>Name:</span>
+                    <input
+                        onChange={e => setInputValue(e.target.value)}
+                        value={inputValue}
+                    />
+                </div>
+                <div className={classes.buttonsContainer}>
+                    <Button
+                        component={'span'}
+                        variant={'contained'}
+                        color={'primary'}
+                        onClick={() => {
+                            updateFile({
+                                ...selectedItem,
+                                name: inputValue,
+                                modified: 0,
+                            });
+                            setInputValue('');
+                            setOpenModifyModal(false);
+                        }}
+                    >
+                        Update
+                    </Button>
+                    <Button
+                        component={'span'}
+                        onClick={() => {
+                            setOpenModifyModal(false);
+                        }}
+                    >
+                        Cancel
+                    </Button>
+                </div>
+            </Modal>
         </TableContainer>
     )
 };
 
-export default FilesTable
+const mapStateToProps = (state) => ({
+    files: getFilesList(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    deleteFile: (id) => {dispatch(deleteFiles(id))},
+    updateFile: (data) => dispatch(updateFile(data)),
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FilesTable)

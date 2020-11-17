@@ -47,8 +47,8 @@ const SideBarMenu = () => {
             <ul className={'side-bar-items'}>
                 {
                     items.map((item, index) =>
-                        <Link to={item.link}>
-                            <li key={index}>
+                        <Link to={item.link} key={index}>
+                            <li>
                                 <MenuItem item={item} />
                             </li>
                         </Link>

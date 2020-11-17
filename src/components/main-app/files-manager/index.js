@@ -1,5 +1,9 @@
 import React, { useState } from 'react';
 import _isEmpty from 'lodash/isEmpty';
+//Redux
+import { connect } from 'react-redux';
+import { addFileList } from '../../../redux/actions';
+import { getFilesList } from '../../../redux/selectors';
 //Styles
 import './files-manager.scss';
 //Component
@@ -25,20 +29,20 @@ const useStyles = makeStyles(() => ({
     }
 }));
 
-const FilesManager = () => {
+const FilesManager = (props) => {
+    const { addNewFileList, filesList } = props;
     const [openModal, setOpenModal] = useState(false);
     const [partialSelectedFiles, setPartialSelectedFiles] = useState([]);
-    const [selectedFiles, setSelectedFiles] = useState([]);
     const classes = useStyles();
     const getFileInfo = (e) => {
         const selectedFiles = Object.values(e.target.files);
-        const filesInfo = selectedFiles.map((file) => {
+        const filesInfo = selectedFiles.map((file, index) => {
             return {
                 name: file.name,
                 modified: Math.round(file.lastModified / 60),
+                id: filesList.length > 0 ? filesList.length + index : index,
             }
         });
-
         setPartialSelectedFiles(filesInfo);
     };
 
@@ -90,7 +94,7 @@ const FilesManager = () => {
                                     color={'primary'}
                                     component={'span'}
                                     onClick={() => {
-                                        setSelectedFiles(selectedFiles.concat(partialSelectedFiles));
+                                        addNewFileList(filesList.concat(partialSelectedFiles));
                                         setPartialSelectedFiles([]);
                                         setOpenModal(false)
                                     }}
@@ -112,9 +116,20 @@ const FilesManager = () => {
                     </Button>
                 </Modal>
             </div>
-            <FilesTable files={selectedFiles} updateFiles={setSelectedFiles} />
+            <FilesTable />
         </div>
     )
 };
 
-export default FilesManager
+const mapStateToProps = (state) => ({
+    filesList: getFilesList(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    addNewFileList: (values) => {dispatch(addFileList(values))}
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FilesManager)
